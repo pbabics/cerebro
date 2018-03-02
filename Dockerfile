@@ -1,6 +1,6 @@
 FROM openjdk:8u131-jre-alpine
 
-ARG CEREBRO_VERSION=0.6.6
+ARG CEREBRO_VERSION=0.7.2
 RUN addgroup -S cerebro && adduser -S -G cerebro cerebro \
     && apk add --no-cache 'su-exec>=0.2' curl tar bash \
     && /bin/mkdir -p /opt/cerebro/logs /opt/cerebro/tmp
@@ -14,4 +14,7 @@ RUN cd /opt/ \
 
 WORKDIR /opt/cerebro
 EXPOSE 9000
-CMD ["su-exec", "cerebro", "java", "-Duser.dir=/opt/cerebro", "-cp", "''", "-jar", "/opt/cerebro/lib/cerebro.cerebro-launcher.jar"]
+
+COPY run.sh /
+
+ENTRYPOINT [ "/run.sh" ]
